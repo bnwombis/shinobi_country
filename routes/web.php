@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\HomeController;
+use App\Models\Country;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard', ["countries" => Country::all()]);
 })->middleware(['auth'])->name('dashboard');
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('countries', CountryController::class);
+});
 
 require __DIR__.'/auth.php';
